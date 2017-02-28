@@ -1,5 +1,4 @@
 ﻿
-
 namespace BatchProcessDriver
 {
     using Helpers;
