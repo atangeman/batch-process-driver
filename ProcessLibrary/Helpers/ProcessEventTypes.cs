@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BatchProcessDriver.Helpers
+﻿namespace ProcessLibrary.Helpers
 {
     /// <summary>
     /// Enumtype with levels of notification for assigned process arguments.

@@ -44,20 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ConsoleHelpers.cs" />
-    <Compile Include="Helpers\ProcessCompletedArgs.cs" />
-    <Compile Include="Helpers\ProcessEventArgs.cs" />
-    <Compile Include="Helpers\ProcessEvents.cs" />
-    <Compile Include="Helpers\ProcessEventTypes.cs" />
-    <Compile Include="Helpers\ProcessTypes.cs" />
-    <Compile Include="Processes\IProcess.cs" />
-    <Compile Include="Processes\ProcessBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ProcessLibrary\ProcessLibrary.csproj">
+      <Project>{f193c2f4-8185-46fe-a6ff-a6e4ce3255fb}</Project>
+      <Name>ProcessLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
