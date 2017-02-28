@@ -2,7 +2,7 @@
 namespace BatchProcessDriver
 {
     using Helpers;
-    using ProcessLibrary.Helpers;
+    using ProcessLibrary.Events;
     using ProcessLibrary.Processes;
     using System;
     using System.Collections.Generic;

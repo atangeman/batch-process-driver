@@ -1,4 +1,4 @@
-﻿namespace ProcessLibrary.Helpers
+﻿namespace ProcessLibrary.Events
 {
     /// <summary>
     /// Author: Andrew Tangeman

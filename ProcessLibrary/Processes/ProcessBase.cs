@@ -1,6 +1,6 @@
 ﻿namespace ProcessLibrary.Processes
 {
-    using Helpers;
+    using Events;
 
     /// <summary>
     /// Base class for all Processes to inherit. Provides event handlers to relay messages up to calling method.
