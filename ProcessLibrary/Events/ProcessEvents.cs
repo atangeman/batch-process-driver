@@ -1,4 +1,6 @@
-﻿namespace ProcessLibrary.Events
+﻿using System;
+
+namespace ProcessLibrary.Events
 {
     /// <summary>
     /// Author: Andrew Tangeman
@@ -15,4 +17,10 @@
     /// </summary>
     public delegate void ProcessCompletedEventHandler(object sender, ProcessCompletedArgs e);
 
+    /// <summary>
+    /// Author: Andrew Tangeman
+    /// Purpose: Event delegate to enable parent-level subscription to events thrown from subroutines or subprocesses.
+    /// Notes:
+    /// </summary>
+    public delegate void ProcessExceptionEventHandler(object sender, Exception ex);
 }
