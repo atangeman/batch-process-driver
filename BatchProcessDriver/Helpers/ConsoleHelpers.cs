@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BatchProcessDriver.Helpers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
     /// <summary>
     /// Super basic switch statement with a console helper class from a lab I did 2 years ago.
     /// </summary>
     /// <remarks>
-    /// Author: Andy Tangeman
+    /// Author: Bruce Schurter <bruce.ucsd@gmail.com>
     /// Purpose: Super basic switch statement with a console helper class from a lab I did 2 years ago.
     /// Notes: 
     ///       [atangeman2017019] - Feel free to modify or rewrite from scratch.
@@ -61,13 +60,7 @@ namespace BatchProcessDriver.Helpers
                 Console.WriteLine(new string(ch, length));
                 Console.SetCursorPosition(0, row + 1);
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -101,10 +94,7 @@ namespace BatchProcessDriver.Helpers
             }
             catch (Exception ex)
             {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
+                throw;
             }
             finally
             {
@@ -198,13 +188,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return input;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -263,13 +247,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -328,13 +306,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -393,13 +365,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -458,13 +424,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -523,13 +483,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -588,13 +542,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -653,13 +601,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -759,13 +701,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -814,13 +750,7 @@ namespace BatchProcessDriver.Helpers
                 value = items[index - 1];
                 return value;
             }
-            catch (Exception ex)
-            {
-                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
-                Console.ForegroundColor = ErrorColor;
-                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
-                throw ex;
-            }
+            catch { throw; }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -870,12 +800,7 @@ namespace BatchProcessDriver.Helpers
                 }
                 return true;
             }
-            catch (Exception ex)
-            {
-                System.Reflection.MethodBase mb = System.Reflection.MethodBase.GetCurrentMethod();
-                System.Diagnostics.Debug.WriteLine(ex.Message, string.Format("{0}.{1}.{2}", mb.DeclaringType.Namespace, mb.DeclaringType.Name, mb.Name));
-                return false;
-            }
+            catch { throw; }
         }
         #endregion Private Methods
 

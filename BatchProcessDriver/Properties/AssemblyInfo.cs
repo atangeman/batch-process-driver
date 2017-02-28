@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BatchProcessDriver")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Simple runner control for interfacing with ProcessLibrary types")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Andy Tangeman")]
 [assembly: AssemblyProduct("BatchProcessDriver")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
