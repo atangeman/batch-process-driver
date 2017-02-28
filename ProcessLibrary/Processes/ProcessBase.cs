@@ -1,12 +1,7 @@
-﻿using BatchProcessDriver.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BatchProcessDriver.Processes
+﻿namespace ProcessLibrary.Processes
 {
+    using Helpers;
+
     /// <summary>
     /// Base class for all Processes to inherit. Provides event handlers to relay messages up to calling method.
     /// </summary>

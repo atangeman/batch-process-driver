@@ -1,13 +1,15 @@
-﻿using BatchProcessDriver.Helpers;
-using BatchProcessDriver.Processes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace BatchProcessDriver
 {
+    using Helpers;
+    using ProcessLibrary.Helpers;
+    using ProcessLibrary.Processes;
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Threading;
+
     class Program
     {
         /// <summary>
@@ -24,6 +26,8 @@ namespace BatchProcessDriver
         /// Boolean set to true if user opens the console app.
         /// </summary>
         private static bool m_LiveConsoleMode = false;
+
+        private static CmdTypes Selection { get; set; }
 
         static void Main(string[] args)
         {

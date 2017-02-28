@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BatchProcessDriver.Processes
+﻿namespace ProcessLibrary.Processes
 {
+    using Helpers;
     /// <summary>
     /// Author: Andrew Tangeman
     /// Purpose: Interface to use as a template for building Process classes
