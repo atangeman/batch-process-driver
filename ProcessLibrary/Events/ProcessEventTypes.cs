@@ -1,4 +1,4 @@
-﻿namespace ProcessLibrary.Helpers
+﻿namespace ProcessLibrary.Events
 {
     /// <summary>
     /// Enumtype with levels of notification for assigned process arguments.

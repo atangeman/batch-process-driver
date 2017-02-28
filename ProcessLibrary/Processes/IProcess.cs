@@ -1,6 +1,6 @@
 ﻿namespace ProcessLibrary.Processes
 {
-    using Helpers;
+    using Events;
     /// <summary>
     /// Author: Andrew Tangeman
     /// Purpose: Interface to use as a template for building Process classes
