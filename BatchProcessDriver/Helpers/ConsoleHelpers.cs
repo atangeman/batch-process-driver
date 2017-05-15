@@ -1,6 +1,7 @@
 ﻿
 namespace BatchProcessDriver.Helpers
 {
+    using FireJobUtilities.Events;
     using System;
     using System.Collections;
     using System.Collections.Generic;
