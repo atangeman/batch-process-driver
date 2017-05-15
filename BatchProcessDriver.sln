@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchProcessDriver", "BatchProcessDriver\BatchProcessDriver.csproj", "{60E0491E-C8C7-4061-937C-D4B2D1327872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessLibrary", "ProcessLibrary\ProcessLibrary.csproj", "{F193C2F4-8185-46FE-A6FF-A6E4CE3255FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchProcessLibrary", "BatchProcessLibrary\BatchProcessLibrary.csproj", "{F193C2F4-8185-46FE-A6FF-A6E4CE3255FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

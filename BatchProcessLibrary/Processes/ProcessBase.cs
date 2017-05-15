@@ -1,4 +1,4 @@
-﻿namespace ProcessLibrary.Processes
+﻿namespace BatchProcessLibrary.Processes
 {
     using Events;
     using System;

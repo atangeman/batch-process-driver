@@ -2,7 +2,7 @@
 // Copyright (c) City of San Diego. All rights reserved.
 // </copyright>
 
-namespace FireJobUtilities.Events
+namespace BatchProcessLibrary.Events
 {
     /// <summary>
     /// Generic interface for passing arguments to Process event handlers.

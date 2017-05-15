@@ -1,13 +1,13 @@
 ﻿
 namespace BatchProcessDriver.Helpers
 {
-    using FireJobUtilities.Events;
+    using BatchProcessLibrary.Events;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-
+    using System.Reflection;
     /// <summary>
     /// Super basic switch statement with a console helper class from a lab I did 2 years ago.
     /// </summary>

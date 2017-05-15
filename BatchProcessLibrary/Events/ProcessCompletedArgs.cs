@@ -1,4 +1,4 @@
-﻿namespace ProcessLibrary.Events
+﻿namespace BatchProcessLibrary.Events
 {
     /// <summary>
     /// Author: Andrew Tangeman

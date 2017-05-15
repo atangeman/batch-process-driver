@@ -2,8 +2,8 @@
 namespace BatchProcessDriver
 {
     using Helpers;
-    using ProcessLibrary.Events;
-    using ProcessLibrary.Processes;
+    using BatchProcessLibrary.Events;
+    using BatchProcessLibrary.Processes;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -65,7 +65,7 @@ namespace BatchProcessDriver
         {
             m_LiveConsoleMode = true; // Console window must be open, so this should be true
 
-            PrintBanner(); // print a cool banner to greet our users
+            ConsoleHelpers.PrintBanner(); // print a cool banner to greet our users
 
             //-- User input control logic --
             exitPrompt = false;
@@ -213,18 +213,6 @@ namespace BatchProcessDriver
             }
             Console.WriteLine("Number of elements in the Queue: {0}", ProcessQueue.Count);
             Console.WriteLine();
-        }
-
-        /// <summary>
-        /// Prints super neat banner with program info displayed.
-        /// </summary>
-        private static void PrintBanner()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            ConsoleHelpers.WriteBorder(); // uses consolehelper method to write a neat ascii border
-            Console.WriteLine($"---- {asm.FullName.Split(',')[0]}"); // print crappy banner, needs more ascii
-            Console.WriteLine($"---- {asm.FullName.Split(',')[1].Replace('=', ' ').TrimStart()}"); // print crappy banner, needs more ascii
-            ConsoleHelpers.WriteBorder();
         }
 
         /// <summary>

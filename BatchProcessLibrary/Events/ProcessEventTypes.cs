@@ -1,4 +1,4 @@
-﻿namespace ProcessLibrary.Events
+﻿namespace BatchProcessLibrary.Events
 {
     /// <summary>
     /// Enumtype with levels of notification for assigned process arguments.
