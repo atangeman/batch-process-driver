@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\IProcessArgs.cs" />
     <Compile Include="Events\ProcessCompletedArgs.cs" />
     <Compile Include="Events\ProcessEventArgs.cs" />
     <Compile Include="Events\ProcessEvents.cs" />

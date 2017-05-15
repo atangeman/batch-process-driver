@@ -41,7 +41,6 @@ namespace BatchProcessDriver
         /// ToDo: Use CommandParser library to parse command-line arguments.
         /// [atangeman20170123] ArcObjects relies on COM objects that are Win32-based. Requires single-threaded apartment state (STAThread).
         /// </remarks>
-        ///
         static void Main(string[] args)
         {
 

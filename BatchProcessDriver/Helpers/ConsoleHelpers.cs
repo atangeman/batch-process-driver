@@ -18,14 +18,57 @@ namespace BatchProcessDriver.Helpers
     /// </remarks>
     public static class ConsoleHelpers
     {
+        /// <summary>
+        /// Enumtype for specifying the level of alert returned
+        /// </summary>
+        /// <remarks>
+        /// Enum value maps to ESRI GP return code
+        /// </remarks>
+        public enum PromptType
+        {
+            INFO = 7, SUCCESS = 10, WARNING = 6, ALERT = 14, ERROR = 12
+        }
+
         #region Properties
+
+        /// <summary>
+        /// Gets or sets default text color for prompt
+        /// </summary>
         private static ConsoleColor PromptColor { get; set; }
+
         private static ConsoleColor InputColor { get; set; }
+
         private static ConsoleColor ErrorColor { get; set; }
+
+        private static bool? liveConsoleMode;
+
+        /// <summary>
+        /// Gets a value indicating whether boolean set to true if user opens the console app.
+        /// </summary>
+        public static bool LiveConsoleMode
+        {
+            get
+            {
+                if (liveConsoleMode == null)
+                {
+                    liveConsoleMode = true;
+                    try
+                    {
+                        int window_height = Console.WindowHeight;
+                    }
+                    catch { liveConsoleMode = false; }
+                }
+
+                return liveConsoleMode.Value;
+            }
+        }
+
         #endregion Properties
 
         #region Constructors
+
         /// <summary>
+        /// Initializes static members of the <see cref="ConsoleHelpers"/> class.
         /// Initialize the static fields
         /// </summary>
         static ConsoleHelpers()
@@ -38,6 +81,83 @@ namespace BatchProcessDriver.Helpers
         #endregion Constructors
 
         #region Public Methods
+
+        /// <summary>
+        /// Set the size of the console window
+        /// </summary>
+        public static void SetConsoleWindowSize(int width, int height)
+        {
+            if (width < 1 || height < 1) return;
+            int w = (Console.LargestWindowWidth < width) ? Console.LargestWindowWidth : width;
+            int h = (Console.LargestWindowHeight < height) ? Console.LargestWindowHeight : height;
+            Console.SetWindowSize(w, h);
+        }
+
+        /// <summary>
+        /// Prints arguments to console (if active) using special formatting.
+        /// </summary>
+        /// <param name="sender">Sender object envoking delegate. Can be null</param>
+        /// <param name="e">IProcessingArgs passed from delegate</param>
+        /// <param name="pType">Enumtype for elevating prompt urgency (optional)</param>
+        public static void PrintToConsole(object sender, IProcessArgs e, PromptType pType = PromptType.INFO)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor; // Remember original console color for when exiting
+            Console.ForegroundColor = (ConsoleColor)pType;
+            if (LiveConsoleMode)
+            {
+                Console.WriteLine($"{sender}:: {e.Message}"); // write out to console if open
+            }
+
+            Console.ForegroundColor = originalColor;
+        }
+
+        /// <summary>
+        /// Prints arguments to console (if active) using special formatting.
+        /// </summary>
+        /// <param name="sender">Sender object envoking delegate. Can be null</param>
+        /// <param name="message">Message passed by delegate</param>
+        /// <param name="pType">Enumtype for elevating prompt urgency (optional)</param>
+        public static void PrintToConsole(object sender, string message, PromptType pType = PromptType.INFO)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor; // Remember original console color for when exiting
+            Console.ForegroundColor = (ConsoleColor)pType;
+            if (LiveConsoleMode)
+            {
+                Console.WriteLine($"{sender}:: {message}"); // write out to console if open
+            }
+
+            Console.ForegroundColor = originalColor;
+        }
+
+        /// <summary>
+        /// Prints arguments to console (if active) using special formatting.
+        /// </summary>
+        /// <param name="message">Message to print</param>
+        /// <param name="pType">Prompt elevation type</param>
+        public static void PrintToConsole(string message, PromptType pType = PromptType.INFO)
+        {
+            ConsoleColor originalColor = Console.ForegroundColor; // Remember original console color for when exiting
+            Console.ForegroundColor = (ConsoleColor)pType;
+            if (LiveConsoleMode)
+            {
+                Console.WriteLine($"Main:: {message}"); // write out to console if open
+            }
+
+            Console.ForegroundColor = originalColor;
+        }
+
+        /// <summary>
+        /// Prints super neat banner with program info displayed.
+        /// </summary>
+        public static void PrintBanner()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            ConsoleHelpers.WriteBorder(); // uses consolehelper method to write a neat ascii border
+            Console.WriteLine($"---- {asm.FullName.Split(',')[0]}"); // print crappy banner, needs more ascii
+            Console.WriteLine($"---- {asm.FullName.Split(',')[1].Replace('=', ' ').TrimStart()}"); // print crappy banner, needs more ascii
+            ConsoleHelpers.WriteBorder();
+        }
+
         /// <summary>
         /// Prints a border using the given character and length
         /// </summary>
@@ -57,10 +177,17 @@ namespace BatchProcessDriver.Helpers
                 {
                     length = Console.WindowWidth;
                 }
+
                 Console.WriteLine(new string(ch, length));
                 Console.SetCursorPosition(0, row + 1);
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -90,11 +217,15 @@ namespace BatchProcessDriver.Helpers
                 {
                     return true;
                 }
+
                 return false;
             }
             catch (Exception ex)
             {
-                throw;
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
             }
             finally
             {
@@ -131,6 +262,7 @@ namespace BatchProcessDriver.Helpers
                     {
                         // input = input.SafeTrim(maxLength);
                     }
+
                     if (input.Length < minLength)
                     {
                         // Out of range
@@ -139,6 +271,7 @@ namespace BatchProcessDriver.Helpers
                         done = false;
                     }
                 }
+
                 return input;
             }
             catch (Exception ex)
@@ -180,15 +313,21 @@ namespace BatchProcessDriver.Helpers
 
                     if (validChars == null || validChars.Length == 0 || validChars.Contains(input))
                     {
-
                         Console.ForegroundColor = InputColor;
                         Console.WriteLine(input);
                         done = true;
                     }
                 }
+
                 return input;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -245,9 +384,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not an byte.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -304,9 +450,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not an integer.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -363,9 +516,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not a long.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -422,9 +582,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not a decimal.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -481,9 +648,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not a float.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -540,9 +714,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not a double.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -599,9 +780,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered was not a date.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -612,10 +800,10 @@ namespace BatchProcessDriver.Helpers
         /// Gets an enum value from the user
         /// </summary>
         /// <param name="prompt">Prompt to display to the user</param>
-        /// <param name="enumType">Enumeration type value must belong to</param>
         /// <returns>Enum value entered by the user within the enum's range</returns>
         /// <remarks>This function will not exit until the user gives a valid input.  Also, the input can be either the number or text of the enum.</remarks>
-        public static T ReadEnum<T>(string prompt) where T : struct
+        public static T ReadEnum<T>(string prompt)
+            where T : struct
         {
             // Remember original console color so we can set it back when exiting
             ConsoleColor originalColor = Console.ForegroundColor;
@@ -626,7 +814,7 @@ namespace BatchProcessDriver.Helpers
                 Type type = typeof(T);
                 T value = default(T);
 
-                //FlagsAttribute flags = type.GetCustomAttribute<FlagsAttribute>();
+                // FlagsAttribute flags = type.GetCustomAttribute<FlagsAttribute>();
                 bool flags = false;
                 object[] attrs = type.GetCustomAttributes(typeof(FlagsAttribute), false);
                 if (attrs != null && attrs.Length > 0)
@@ -667,6 +855,7 @@ namespace BatchProcessDriver.Helpers
                             Console.WriteLine("{0:G}", enumValue);
                         }
                     }
+
                     Console.ForegroundColor = PromptColor;
                     Console.Write("Value: ");
 
@@ -692,6 +881,7 @@ namespace BatchProcessDriver.Helpers
                             }
                         }
                     }
+
                     if (!done)
                     {
                         // Out of range
@@ -699,9 +889,16 @@ namespace BatchProcessDriver.Helpers
                         Console.WriteLine("The value entered does not exist in the value list.  Please try again.");
                     }
                 }
+
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -746,11 +943,18 @@ namespace BatchProcessDriver.Helpers
                     Console.ForegroundColor = InputColor;
                     Console.WriteLine(items[i]);
                 }
+
                 index = ReadInt("Value: ", 1, items.Count);
                 value = items[index - 1];
                 return value;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                string location = System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Namespace + "." + System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.Name + "." + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                Console.ForegroundColor = ErrorColor;
+                Console.WriteLine("An unexpected error occurred in {0}: {1}", location, ex.Message);
+                throw ex;
+            }
             finally
             {
                 Console.ForegroundColor = originalColor;
@@ -759,6 +963,7 @@ namespace BatchProcessDriver.Helpers
         #endregion Public Methods
 
         #region Private Methods
+
         /// <summary>
         /// Determines if the given flags enum value is defined in the given enum
         /// </summary>
@@ -785,7 +990,6 @@ namespace BatchProcessDriver.Helpers
 
                 // Use a ulong to test for bits set - negative flags do not make logical sense and ulong is the largest enum size
                 for (int i = 0; i < 64; i++)
-                //for (ulong bit = 0x1; bit <= 0x8000000000000000; bit <<= 1)
                 {
                     // Check to see if the current flag exists in the bit mask
                     ulong bit = 0x1UL << i;
@@ -798,11 +1002,16 @@ namespace BatchProcessDriver.Helpers
                         }
                     }
                 }
+
                 return true;
             }
-            catch { throw; }
+            catch (Exception ex)
+            {
+                System.Reflection.MethodBase mb = System.Reflection.MethodBase.GetCurrentMethod();
+                System.Diagnostics.Debug.WriteLine(ex.Message, string.Format("{0}.{1}.{2}", mb.DeclaringType.Namespace, mb.DeclaringType.Name, mb.Name));
+                return false;
+            }
         }
         #endregion Private Methods
-
     }
 }
