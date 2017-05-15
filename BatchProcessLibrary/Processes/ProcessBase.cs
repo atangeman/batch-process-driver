@@ -48,7 +48,7 @@
         /// </summary>
         /// <param name="eventType">Notification level for process.</param>
         /// <param name="message">Message to send as a notification.</param>
-        internal virtual void RaiseProcessEvent(ProcessEventTypes eventType, string message)
+        public virtual void RaiseProcessEvent(ProcessEventTypes eventType, string message)
         {
             if (OnProcessChangedEvent != null)
             {
@@ -62,7 +62,7 @@
         /// Use this method to send basic informational messages.
         /// </summary>
         /// <param name="message">Message to send as a notification.</param>
-        internal virtual void RaiseLogEvent(string message)
+        public virtual void RaiseLogEvent(string message)
         {
             if (OnProcessChangedEvent != null)
             {
@@ -76,7 +76,7 @@
         /// log and exception related information for business logic decisions.
         /// </summary>
         /// <param name="message">Message to send as a notification.</param>
-        internal virtual void RaiseDebugEvent(string message)
+        public virtual void RaiseDebugEvent(string message)
         {
             if (OnProcessChangedEvent != null)
             {
@@ -96,14 +96,14 @@
         {
             this.OnProcessCompleteEvent(this, e);
         }
-        
+
 
         /// <summary>
         /// Notifies all subscribers when the process completes. Can be used to initiate the start of 
         /// a second process, or check the status of a completed process.
         /// </summary>
         /// <param name="returnCode">Return code corresponding to the status of the process when ended.</param>
-        internal virtual void RaiseProcessComplete(FireProcessReturnCodes returnCode, string message = "")
+        public virtual void RaiseProcessComplete(FireProcessReturnCodes returnCode, string message = "")
         {
             if (OnProcessCompleteEvent != null)
             {
@@ -117,7 +117,7 @@
         /// exception related information for business logic decisions.
         /// </summary>
         /// <param name="ex">Exception encountered by process.</param>
-        protected virtual void RaiseProcessException(Exception ex)
+        public virtual void RaiseProcessException(Exception ex)
         {
             if (this.OnProcessExceptionEvent != null)
             {
@@ -137,7 +137,7 @@
         /// </summary>
         /// <param name="ex">Exception encountered by process.</param>
         /// <param name="message">Message to send as a notification.</param>
-        protected virtual void RaiseProcessException(Exception ex, string message)
+        public virtual void RaiseProcessException(Exception ex, string message)
         {
             Exception ex2 = new Exception(message, ex);
             if (this.OnProcessExceptionEvent != null)

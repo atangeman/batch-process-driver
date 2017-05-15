@@ -9,8 +9,8 @@ namespace BatchProcessDriver
     using System.Linq;
     using System.Reflection;
     using System.Threading;
-
-    class Program
+    using ProcessExample;
+    static class Program
     {
         /// <summary>
         /// Basic enum type for menu options
@@ -27,7 +27,7 @@ namespace BatchProcessDriver
         /// </summary>
         private static bool m_LiveConsoleMode = false;
 
-        private static object ExampleJob1Config;
+        private static IDictionary<string, object> ExampleJob1Config { get; set; } = new Dictionary<string, object>();
 
         private static CmdTypes Selection { get; set; }
 
@@ -108,7 +108,7 @@ namespace BatchProcessDriver
             switch (procType) // cliche switch statement
             {
                 case ProcessTypes.PROCESS1:
-                    //m_ProcessQueue.Enqueue(new Process1());
+                    ProcessQueue.Enqueue(new ProcessExampleMain(ExampleJob1Config));
                     Console.WriteLine("Process added to queue");
                     break;
                 case ProcessTypes.PROCESS2:
