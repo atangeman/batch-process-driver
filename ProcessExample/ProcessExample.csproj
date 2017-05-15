@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{491C858C-7600-4754-A62B-48B57F91F710}</ProjectGuid>
+    <ProjectGuid>{46E5C36A-F571-4D0E-B1A3-B1EAFFE75E65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProcessExample</RootNamespace>
@@ -42,6 +42,12 @@
   <ItemGroup>
     <Compile Include="ProcessExampleMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BatchProcessLibrary\BatchProcessLibrary.csproj">
+      <Project>{f193c2f4-8185-46fe-a6ff-a6e4ce3255fb}</Project>
+      <Name>BatchProcessLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
