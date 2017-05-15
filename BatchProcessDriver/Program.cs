@@ -6,6 +6,7 @@ namespace BatchProcessDriver
     using ProcessLibrary.Processes;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using System.Threading;
 
@@ -15,22 +16,39 @@ namespace BatchProcessDriver
         /// Basic enum type for menu options
         /// </summary>
         /// 
-        private enum CmdTypes { Quit = 0, LoadProcessQueue, PrintProcessQueue, Options };
+        private enum CmdTypes { Quit = 0, LoadProcessQueue, PrintProcessQueue, StartProcessQueue, Options };
         /// <summary>
         /// Private queue to manage the running of tasks in order added
         /// </summary>
-        private static Queue<IProcess> m_ProcessQueue;
+        private static Queue<IProcess> ProcessQueue;
 
         /// <summary>
         /// Boolean set to true if user opens the console app.
         /// </summary>
         private static bool m_LiveConsoleMode = false;
 
+        private static object ExampleJob1Config;
+
         private static CmdTypes Selection { get; set; }
 
+        private static bool exitPrompt = false;
+
+        /// <summary>
+        /// Main executing method
+        /// </summary>
+        /// <param name="args">Runtime arguments to parse</param>
+        /// <remarks>
+        /// ToDo: Use CommandParser library to parse command-line arguments.
+        /// [atangeman20170123] ArcObjects relies on COM objects that are Win32-based. Requires single-threaded apartment state (STAThread).
+        /// </remarks>
+        ///
         static void Main(string[] args)
         {
-            m_ProcessQueue = new Queue<IProcess>();
+
+            ExampleJob1Config = (System.Configuration.ConfigurationManager.GetSection("CustomJob1Settings") as System.Collections.Hashtable)
+                .Cast<System.Collections.DictionaryEntry>().ToDictionary(k => k.Key.ToString(), v => v.Value);
+
+            ProcessQueue = new Queue<IProcess>();
             if (args.Length < 1) { StartPrompt(); }
             else
             {
@@ -40,6 +58,44 @@ namespace BatchProcessDriver
                 }
             }
         }
+
+        /// <summary>
+        /// Method to prompt the user for input if no command-line arguments are provided.
+        /// </summary>
+        private static void StartPrompt()
+        {
+            m_LiveConsoleMode = true; // Console window must be open, so this should be true
+
+            PrintBanner(); // print a cool banner to greet our users
+
+            //-- User input control logic --
+            exitPrompt = false;
+            do
+            {
+                Selection = ConsoleHelpers.ReadEnum<CmdTypes>("Select an Action: "); // use console helper to prompt user
+                switch (Selection)
+                {
+                    case CmdTypes.LoadProcessQueue:
+                        LoadProcessQueue();
+                        break;
+                    case CmdTypes.PrintProcessQueue:
+                        PrintProcessQueue();
+                        break;
+                    case CmdTypes.StartProcessQueue:
+                        StartNextInProcessQueue();
+                        break;
+                    case CmdTypes.Quit:
+                        exitPrompt = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            while (Selection != CmdTypes.Quit && exitPrompt == false); // Keep prompting user until they make a decision.
+
+            EndPrompt(true); // end console session
+        }
+
         /// <summary>
         /// Method to prompt the user to load Process queue with process objects to run
         /// </summary>
@@ -53,15 +109,15 @@ namespace BatchProcessDriver
             switch (procType) // cliche switch statement
             {
                 case ProcessTypes.PROCESS1:
-                    //m_ProcessQueue.Enqueue(new RefreshProcess());
+                    //m_ProcessQueue.Enqueue(new Process1());
                     Console.WriteLine("Process added to queue");
                     break;
                 case ProcessTypes.PROCESS2:
-                    //m_ProcessQueue.Enqueue(new RoadNetProcess());
+                    //m_ProcessQueue.Enqueue(new Process2());
                     Console.WriteLine("Process added to queue");
                     break;
                 case ProcessTypes.PROCESS3:
-                    //m_ProcessQueue.Enqueue(new QAReportProcess());
+                    //m_ProcessQueue.Enqueue(new Process3());
                     Console.WriteLine("Process added to queue");
                     break;
                 default:
@@ -69,6 +125,22 @@ namespace BatchProcessDriver
                     break;
             }
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Starts the next process in the queue.
+        /// </summary>
+        private static void StartNextInProcessQueue()
+        {
+            if (ProcessQueue.Count() > 0)
+            {
+                IProcess CurrentProcess = ProcessQueue.Dequeue();
+                StartProcess(CurrentProcess);
+            }
+            else
+            {
+                EndPrompt();
+            }
         }
 
         /// <summary>
@@ -123,43 +195,10 @@ namespace BatchProcessDriver
                 Console.WriteLine($"{sender}:: {e.Message}"); // write out to console if open
             if (e.ReturnType == FireProcessReturnCodes.SUCCESS) // if previous job was successful, then proceed to next job in queue
             {
-                IProcess nextProcess = m_ProcessQueue.Dequeue();
+                IProcess nextProcess = ProcessQueue.Dequeue();
                 StartProcess(nextProcess);
             }
             // ToDo: Add call to Pearson's logging library here
-        }
-
-        /// <summary>
-        /// Method to prompt the user for input if no command-line arguments are provided.
-        /// </summary>
-        private static void StartPrompt()
-        {
-            m_LiveConsoleMode = true; // Console window must be open, so this should be true
-
-            PrintBanner(); // print a cool banner to greet our users
-
-            //-- User input control logic --
-            bool exitPrompt = false;
-            do
-            {
-                Selection = ConsoleHelpers.ReadEnum<CmdTypes>("Select an Action: "); // use console helper to prompt user
-                switch (Selection) // cliche switch statement
-                {
-                    case CmdTypes.LoadProcessQueue:
-                        LoadProcessQueue();
-                        break;
-                    case CmdTypes.PrintProcessQueue:
-                        PrintProcessQueue();
-                        break;
-                    case CmdTypes.Quit:
-                        exitPrompt = true;
-                        break;
-                    default:
-                        break;
-                }
-            } while (Selection != CmdTypes.Quit && exitPrompt == false); // Keep prompting user until they make a decision.
-
-            EndPrompt(true); // end console session
         }
 
         /// <summary>
@@ -169,11 +208,11 @@ namespace BatchProcessDriver
         {
             Console.WriteLine();
             Console.WriteLine("Current Processes in Queue: ");
-            foreach (IProcess proc in m_ProcessQueue)
+            foreach (IProcess proc in ProcessQueue)
             {
                 Console.WriteLine("{proc.ProcessName}");
             }
-            Console.WriteLine("Number of elements in the Queue: {0}", m_ProcessQueue.Count);
+            Console.WriteLine("Number of elements in the Queue: {0}", ProcessQueue.Count);
             Console.WriteLine();
         }
 
@@ -192,8 +231,11 @@ namespace BatchProcessDriver
         /// <summary>
         /// Method to control exit during interactive console operation.
         /// </summary>
-        static void EndPrompt(bool promptOnExit = false)
+        /// <param name="promptOnExit">Bool to specify whether user should be
+        /// prompted to confirm prior to exit</param>
+        private static void EndPrompt(bool promptOnExit = false)
         {
+            exitPrompt = true;
             if (promptOnExit)
             {
                 Console.Write("\nPress any key to exit...");
@@ -203,6 +245,7 @@ namespace BatchProcessDriver
             {
                 Console.Write("\nApp will exit in 10 seconds...");
                 Thread.Sleep(5000);
+                Environment.Exit(0);
             }
         }
     }
