@@ -91,6 +91,10 @@
       <Project>{f193c2f4-8185-46fe-a6ff-a6e4ce3255fb}</Project>
       <Name>BatchProcessLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProcessExample2\ProcessExample2.csproj">
+      <Project>{F812413B-5851-4539-BB91-98AB27005F52}</Project>
+      <Name>ProcessExample2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProcessExample\ProcessExample.csproj">
       <Project>{46e5c36a-f571-4d0e-b1a3-b1eaffe75e65}</Project>
       <Name>ProcessExample</Name>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchProcessLibrary", "Batc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessExample", "ProcessExample\ProcessExample.csproj", "{46E5C36A-F571-4D0E-B1A3-B1EAFFE75E65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessExample2", "ProcessExample2\ProcessExample2.csproj", "{F812413B-5851-4539-BB91-98AB27005F52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{46E5C36A-F571-4D0E-B1A3-B1EAFFE75E65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46E5C36A-F571-4D0E-B1A3-B1EAFFE75E65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46E5C36A-F571-4D0E-B1A3-B1EAFFE75E65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F812413B-5851-4539-BB91-98AB27005F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F812413B-5851-4539-BB91-98AB27005F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F812413B-5851-4539-BB91-98AB27005F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F812413B-5851-4539-BB91-98AB27005F52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

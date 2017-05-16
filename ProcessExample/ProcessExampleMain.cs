@@ -1,6 +1,8 @@
 ﻿namespace ProcessExample
 {
+    using BatchProcessLibrary.Events;
     using BatchProcessLibrary.Processes;
+    using BatchProcessLibrary.Utilities;
     using Models;
     using System;
     using System.Collections.Generic;
@@ -17,7 +19,6 @@
     {
         private string _filePath;
         private string _outputPath;
-
         private DocumentStatistics docStats;
 
         /// <summary>
@@ -35,6 +36,9 @@
         /// </summary>
         public IDictionary<string, object> Config { get; private set; } = new Dictionary<string, object>();
 
+        /// <summary>
+        /// Gets or sets Document statistics object model
+        /// </summary>
         public DocumentStatistics DocStats
         {
             get
@@ -82,13 +86,13 @@
                     {
                         Console.WriteLine($"{item.Key,-15} {item.Value,-5}");
                     }
-                    SerializeJSON($"{_outputPath}", ref docStats);
+                    DataSerializationTools.SerializeJSON<DocumentStatistics>($"{_outputPath}", ref docStats);
                 }
                 StopProcess();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                RaiseDebugEvent($"Error occured {e.Message}");
+                RaiseProcessException(ex);
             }
 
         }
@@ -164,35 +168,12 @@
         }
 
         /// <summary>
-        /// Serializes JSON using .NET builtin method.
-        /// </summary>
-        /// <param name="filename">Output filename for result</param>
-        /// <param name="dstat">Document Statistics model to serialize</param>
-        private void SerializeJSON(string filename, ref DocumentStatistics dstat)
-        {
-            RaiseLogEvent("");
-            RaiseLogEvent($"Serializing to JSON using {filename} as a path");
-            RaiseLogEvent("");
-            try
-            {
-                using (var stm = new FileStream(filename, FileMode.Create))
-                {
-                    var serializer = new DataContractJsonSerializer(typeof(DocumentStatistics));
-                    serializer.WriteObject(stm, dstat);
-                }
-            }
-            catch (Exception e)
-            {
-                RaiseDebugEvent($"Error occurred {e.Message}");
-            }
-        }
-
-        /// <summary>
         /// Performs logic to terminate process cleanly. 
         /// </summary>
         public void StopProcess()
         {
             IsRunning = false;
+            RaiseProcessComplete(FireProcessReturnCodes.SUCCESS, "Process finished");
         }
     }
 }

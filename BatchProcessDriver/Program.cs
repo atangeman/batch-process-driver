@@ -10,6 +10,8 @@ namespace BatchProcessDriver
     using System.Reflection;
     using System.Threading;
     using ProcessExample;
+    using ProcessExample2;
+
     static class Program
     {
         /// <summary>
@@ -112,7 +114,7 @@ namespace BatchProcessDriver
                     Console.WriteLine("Process added to queue");
                     break;
                 case ProcessTypes.PROCESS2:
-                    //m_ProcessQueue.Enqueue(new Process2());
+                    ProcessQueue.Enqueue(new ProcessExample2());
                     Console.WriteLine("Process added to queue");
                     break;
                 case ProcessTypes.PROCESS3:
@@ -131,7 +133,7 @@ namespace BatchProcessDriver
         /// </summary>
         private static void StartNextInProcessQueue()
         {
-            if (ProcessQueue.Count() > 0)
+            if (ProcessQueue != null && ProcessQueue.Count > 0)
             {
                 IProcess CurrentProcess = ProcessQueue.Dequeue();
                 StartProcess(CurrentProcess);
@@ -194,8 +196,7 @@ namespace BatchProcessDriver
                 Console.WriteLine($"{sender}:: {e.Message}"); // write out to console if open
             if (e.ReturnType == FireProcessReturnCodes.SUCCESS) // if previous job was successful, then proceed to next job in queue
             {
-                IProcess nextProcess = ProcessQueue.Dequeue();
-                StartProcess(nextProcess);
+                StartNextInProcessQueue();
             }
             // ToDo: Add call to Pearson's logging library here
         }
